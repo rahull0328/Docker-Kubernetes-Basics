@@ -109,3 +109,119 @@ Each of the above data storage levels is associated with a certain type of techn
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
+
+## Q. ***What are serverless components in cloud computing?***
+
+Serverless components in cloud computing allow the building of applications to take place without the complexity of managing the infrastructure. One can write code without having provision to a server.
+
+Serverless machines take care of virtual machines and container management. Multithreading, hardware allocating are also taken care of by the serverless components. 
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What are the advantages and disadvantages of serverless computing?***
+
+Serverless computing has the following advantages and disadvantages:
+
+**Advantages:**
+
+* It is cost-effective.
+* The operations on serverless computing are simplified.
+* Serverless computing helps boost productivity.
+* It offers scaling options.
+* It involves zero server management.
+
+**Disadvantages:**
+
+* Serverless code can cause response latency.
+* It is not ideal for high-computing operations because of resource limitations.
+* For serverless computing, the responsibility of security comes under the service company and not the consumer, which might be more vulnerable.
+* Debugging serverless code is a bit more challenging.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What are cloud-enabling technologies?***
+
+There are several areas of technology that contribute to modern-day cloud-based platforms. These are known as cloud-enabling technologies. Some of the cloud-enabling technologies are:
+
+* Broadband Networks and Internet Architecture
+* Data Center Technology
+* (Modern) Virtualization Technology
+* Web Technology
+* Multitenant Technology
+* Service Technology
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What are Microservices?***
+
+Microservices is a process of developing applications that consist of code that is independent of each other and of the underlying developing platform. Each microservice runs a unique process and communicates through well-defined and standardized APIs, once created. These services are defined in the form of a catalog so that developers can easily locate the right service and also understand the governance rules for usage
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Why are microservices important for a true cloud environment?***
+
+The reason why microservices are so important for a true cloud environment is because of these four key benefits:
+
+* Each microservice is built to serve a specific and limited purpose, and hence application development is simplified. Small development teams can then focus on writing code for some of the narrowly defined and easily understood functions.
+* Code changes will be smaller and less complex than with a complex integrated application, making it easier and faster to make changes, whether to fix a problem or to upgrade service with new requirements.
+* Scalability — Scalability makes it easier to deploy an additional instance of a service or change that service as needs evolve.
+* Microservices are fully tested and validated. When new applications leverage existing microservices, developers can assume the integrity of the new application without the need for continual testing.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is the cloud usage monitor?***
+
+The cloud usage monitor mechanism is an autonomous and lightweight software program that is responsible for collecting and processing the IT resource usage data.
+
+Cloud usage monitors can exist in different formats depending on what type of usage metrics these are designed to collect and how the usage data needs to be collected. The following points describe 3 common agent-based implementation formats.
+
+* Monitoring Agent
+* Resource Agent
+* Polling Agent
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How does the Monitoring Agent monitor the cloud usage?***
+
+An intermediary and an event-driven program that exists as a service agent and resides along the existing communication paths is a monitoring agent.  It transparently monitors and analyzes dataflows. Commonly, the monitoring agent is used to measure the network traffic and also message metrics.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How does the Resource Agent monitor the cloud usage?***
+
+A processing module that is used to collect usage data by having event-driven interactions with the specialized resource software, is a resource agent. This agent is applied to check the usage metrics based on pre-defined, observable events at the resource software level, like initiating, suspending, resuming, and vertical scaling.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How does the Polling Agent monitor cloud usage?***
+
+A processing module that gathers cloud service usage data by polling IT resources is called a polling agent. The polling agent has also been used to timely monitor the IT resource status, like uptime and downtime.
+Each of these can be designed to forward collected usage data to a log database for post-processing and for reporting purposes.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What are Cloud-Native Applications?***
+
+‘Cloud native' is a software framework designed with containers, microservices, dynamic orchestration, and also continuous delivery of software. Every part of the cloud-native application has within it its own container and is dynamically orchestrated with other containers to optimize the way the resources are utilized.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
