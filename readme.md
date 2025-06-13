@@ -319,3 +319,142 @@ Usually, in the software development process, code developed on one machine migh
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
+
+## Q. Difference between virtualization and containerization
+
+Containers provide an isolated environment for running the application. The entire user space is explicitly dedicated to the application. Any changes made inside the container is never reflected on the host or even other containers running on the same host. Containers are an abstraction of the application layer. Each container is a different application.
+
+Whereas in Virtualization, hypervisors provide an entire virtual machine to the guest(including Kernal). Virtual machines are an abstraction of the hardware layer. Each VM is a physical machine. VM is more isolated and heavy and takes a lot time to start.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Is there a way to identify the status of a Docker container?
+
+There are six possible states a container can be at any given point –
+
+1. Created
+1. Running
+1. Paused
+1. Restarting
+1. Exited
+1. Dead.
+
+Use the following command to check for docker state at any given point: `$ docker ps` The above command lists down only running containers by default. To look for all containers, use the following command: `$ docker ps -a`
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Can you remove a paused container from Docker?
+
+The answer is no. You cannot remove a paused container. The container has to be in the stopped state before it can be removed.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Can a container restart by itself?
+
+No, it\'s not possible for a container to restart by itself. By default the flag -restart is set to false.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Is it better to directly remove the container using the rm command or stop the container followed by remove container?
+
+Its always better to stop the container and then remove it using the remove command. `$ docker stop <coontainer_id> $ docker rm -f <container_id>`
+Stopping the container and then removing it will allow sending SIG_HUP signal to recipients. This will ensure that all the containers have enough time to clean up their tasks. This method is considered a good practice, avoiding unwanted errors.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Will cloud overtake the use of Containerization?
+
+Docker containers are gaining popularity but at the same time, Cloud services are giving a good fight. In my personal opinion, Docker will never be replaced by Cloud. Using cloud services with containerization will definitely hype the game. Organizations need to take their requirements and dependencies into consideration into the picture and decide what\'s best for them. Most of the companies have integrated Docker with the cloud. This way they can make the best out of both the technologies.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How many containers can run per host?
+
+There can be as many containers as you wish per host. Docker does not put any restrictions on it. But you need to consider every container needs storage space, CPU and memory which the hardware needs to support. You also need to consider the application size. Containers are considered to be lightweight but very dependant on the host OS.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Is it a good practice to run stateful applications on Docker? or What type of applications - Stateless or Stateful are more suitable for Docker Container?
+
+The concept behind stateful applications is that they store their data onto the local file system. You need to decide to move the application to another machine, retrieving data becomes painful. I honestly would not prefer running stateful applications on Docker.
+
+Suppose you have an application that has many dependant services. Will docker compose wait for the current container to be ready to move to the running of the next service?
+The answer is yes. Docker compose always runs in the dependency order. These dependencies are specifications like depends_on, links, volumes_from, etc.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How will you monitor Docker in production?
+
+Docker provides functionalities like docker stats and docker events to monitor docker in production. Docker stats provides CPU and memory usage of the container. Docker events provide information about the activities taking place in the docker daemon.
+
+**Monitoring Tools for Docker:**
+
+1. [Sematext](https://sematext.com/)
+2. [Dynatrace](https://www.dynatrace.com/)
+3. [Datadog](https://www.datadoghq.com/)
+4. [Prometheus & Grafana](https://prometheus.io/docs/visualization/grafana/)
+5. [Elasticsearch & Kibana](https://www.elastic.co/kibana/)
+6. [SolarWinds Server & Application Monitor](https://www.solarwinds.com/server-application-monitor)
+7. [AppOptics Docker Monitoring with APM](https://www.appoptics.com/use-cases/docker-performance-monitoring)
+8. [cAdvisor](https://github.com/google/cadvisor)
+9. [Sysdig](https://sysdig.com/)
+10.[ManageEngine Applications Manager](https://www.manageengine.com/products/applications_manager/)
+11.[Sumo Logic](https://www.sumologic.com/)
+12.[Splunk](https://www.splunk.com/)
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Is it a good practice to run Docker compose in production?
+
+Yes, using docker compose in production is the best practical application of docker compose. When you define applications with compose, you can use this compose definition in various production stages like CI, staging, testing, etc.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What changes are expected in your docker compose file while moving it to production?
+
+These are the following changes you need make to your compose file before migrating your application to the production environment:
+
+* Remove volume bindings, so the code stays inside the container and cannot be changed from outside the container.
+* Binding to different ports on the host.
+* Specify a restart policy
+* Add extra services like log aggregator
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Are you aware of load balancing across containers and hosts? How does it work?
+
+While using docker service with multiple containers across different hosts, you come across the need to load balance the incoming traffic. Load balancing and HAProxy is basically used to balance the incoming traffic across different available(healthy) containers. If one container crashes, another container should automatically start running and the traffic should be re-routed to this new running container. Load balancing and HAProxy works around this concept.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is a Docker Registry?
+
+A Docker Registry is a place where all the Docker Images will be stored and Docker Cloud and Docker Hub are the public registries where these images can be hosted upon. The Docker hub is the default storage for the Docker Images. An own registry can also be set up as per the requirement. Docker Data Center (DDC) can also be used which includes DTR (Docker Trusted Registry). Docker store will provide the feature of buying and selling the Docker images.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
