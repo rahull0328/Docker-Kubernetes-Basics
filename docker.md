@@ -136,3 +136,155 @@ The Docker works on client-server architecture. The Docker client establishes co
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
+
+## Q. ***What is a Dockerfile?***
+
+Docker can build images automatically by reading the instructions from a file called Dockerfile.
+A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image.
+Using docker build, users can create an automated build that executes several command-line instructions in succession.
+
+**Example:**
+
+```js
+# alpine will download only basic version of node.js
+FROM node:alpine
+
+# Instead of root directory, program will use "/usr/app" directory
+WORKDIR /usr/app
+
+# Copy local directory to nodejs directory
+COPY ./ ./
+
+# Perform npm install
+RUN npm install
+
+# Run npm start in command prompt
+CMD ["npm", "start"]
+```
+
+```js
+docker build -t sofyspace/scm-website:latest .        // --tag , -t   ==> Name and optionally a tag in the 'name:tag' format
+docker run -p 3000:3000 sofyspace/scm-website         // Project will run on local and will map to docker conatiner port 
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Tell us something about Docker Compose.***
+
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application\'s services. Then, with a single command, you create and start all the services from your configuration.
+You can use Docker Compose to create separate containers, host them and get them to communicate with each other. Each container will expose a port for communicating with other containers.
+
+**Example:** Define the MySQL service
+
+```yml
+version: "3.7"
+
+services:
+  app:
+    image: node:12-alpine
+    command: sh -c "yarn install && yarn run dev"
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: todos
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: todos
+
+volumes:
+  todo-mysql-data:
+```
+
+```js
+docker-compose up  // Start the App
+docker-compose down   // Removing Volumes
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How is Dockerfile different from Docker Compose***
+
+A Dockerfile is a simple text file that contains the commands a user could call to assemble an image whereas Docker Compose is a tool for defining and running multi-container Docker applications. Docker Compose define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment. It get an app running in one command by just running docker-compose up. Docker compose uses the Dockerfile if one add the build command to your project's docker-compose.yml. Your Docker workflow should be to build a suitable Dockerfile for each image you wish to create, then use compose to assemble the images using the build command.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is Docker Swarm?***
+
+Docker Swarm is native clustering for Docker. It turns a pool of Docker hosts into a single, virtual Docker host. Docker Swarm serves the standard Docker API, any tool that already communicates with a Docker daemon can use Swarm to transparently scale to multiple hosts.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is a Docker Namespace?***
+
+A namespace is one of the Linux features and an important concept of containers. Namespace adds a layer of isolation in containers. Docker provides various namespaces in order to stay portable and not affect the underlying host system. Few namespace types supported by Docker – PID, Mount, IPC, User, Network
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is the lifecycle of a Docker Container?***
+
+Docker containers have the following lifecycle:
+
+1. Create a container
+1. Run the container
+1. Pause the container(optional)
+1. Un-pause the container(optional)
+1. Start the container
+1. Stop the container
+1. Restart the container
+1. Kill the container
+1. Destroy the container
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is Docker Machine?***
+
+Docker machine is a tool that lets you install Docker Engine on virtual hosts. These hosts can now be managed using the docker-machine commands. Docker machine also lets you provision Docker Swarm Clusters.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Suppose you have 3 containers running and out of these, you wish to access one of them. How do you access a running container?***
+
+The following command lets us access a running container:
+
+```js
+docker exec -it bash
+```
+
+The exec command lets you get inside a container and work with it.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Will you lose your data, when a docker container exits?***
+
+No, you won\'t lose any data when Docker container exits. Any data that your application writes to the container gets preserved on the disk until you explicitly delete the container. The file system for the container persists even after the container halts.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
