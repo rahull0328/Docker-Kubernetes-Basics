@@ -578,3 +578,194 @@ docker run --rm --volumes-from dbstore2 -v $(pwd):/backup ubuntu bash -c "cd /db
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
+
+## Q. How to Configure Automated Builds on DockerHub
+
+You can build your images automatically from a build context stored in a repository. A build context is a Dockerfile and any files at a specific location. For an automated build, the build context is a repository containing a Dockerfile.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to configure the default logging driver under Docker?
+
+To configure the Docker daemon to default to a specific logging driver, set the value of log-driver to the name of the logging driver in the daemon.json file, which is located in /etc/docker/ on Linux hosts or C:\ProgramData\docker\config\ on Windows server hosts. The default logging driver is json-file.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Why do my services take 10 seconds to recreate or stop?
+
+Compose stop attempts to stop a container by sending a SIGTERM. It then waits for a default timeout of 10 seconds. After the timeout, a SIGKILL is sent to the container to forcefully kill it. If you are waiting for this timeout, it means that your containers aren’t shutting down when they receive the SIGTERM signal.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How do I run multiple copies of a Compose file on the same host?
+
+Compose uses the project name to create unique identifiers for all of a project’s containers and other resources. To run multiple copies of a project, set a custom project name using the -command line option or the COMPOSE_PROJECT_NAME environment variable.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between up, run, and start under Docker Compose?
+
+Typically, you want docker-compose up. Use up to start or restart all the services defined in a docker-compose.yml. In the default "attached" mode, you see all the logs from all the containers. In "detached" mode (-d), Compose exits after starting the containers, but the containers continue to run in the background.
+
+The docker-compose run command is for running "one-off" or "adhoc" tasks. It requires the service name you want to run and only starts containers for services that the running service depends on. Use run to run tests or perform an administrative task such as removing or adding data to a data volume container. The run command acts like docker run -ti in that it opens an interactive terminal to the container and returns an exit status matching the exit status of the process in the container. The docker-compose start command is useful only to restart containers that were previously created, but were stopped. It never creates new containers.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is Docker Trusted Registry?
+
+Docker Trusted Registry (DTR) is the enterprise-grade image storage solution from Docker. You install it behind your firewall so that you can securely store and manage the Docker images you use in your applications.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to declare default environment variables under Docker Compose?
+
+Compose supports declaring default environment variables in an environment file named .env placed in the folder where the docker-compose command is executed (current working directory). Example: The below example demonstrate how to declare default environmental variable for Docker Compose. img
+
+When you run docker-compose up, the web service defined above uses the image alpine:v3.4. You can verify this with the docker-compose config command which prints your resolved application config to the terminal: img
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Can you list out ways to share Compose configurations between files and projects under Docker Compose?
+
+Compose supports two methods of sharing common configuration:
+
+Extending an entire Compose file by using multiple Compose files
+Extending individual services with the extends field
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the purpose of EXPOSE command in Dockerfile?
+
+When writing your Dockerfiles, the instruction EXPOSE tells Docker the running container listens on specific network ports. This acts as a kind of port mapping documentation that can then be used when publishing the ports.
+
+`EXPOSE <port> [<port>/<protocol>...]`
+
+You can also specify this within a docker run command, such as:
+
+`docker run --expose=1234 my_app`
+
+Please note that EXPOSE will not allow communication via the defined ports to containers outside of the same network or to the host machine. To allow this to happen you need to publish the ports.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Why Docker Monitoring is necessary?
+
+* Monitoring helps to identify issues proactively that would help to avoid system outages.
+* The monitoring time-series data provide insights to fine-tune applications for better performance and robustness.
+* With full monitoring in place, changes could be rolled out safely as issues will be caught early on and be resolved quickly before that transforms into root-cause for an outage.
+* The changes are inherent in container based environments and impact of that too gets monitored indirectly.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Is it possible to run Kubernetes on Docker EE 2.0 Platform?
+
+Yes, it is possible to run Kubernetes under Docker EE 2.0 platform. Docker Enterprise Edition (EE) 2.0 is the only platform that manages and secures applications on Kubernetes in multi-Linux, multi-OS and multi-cloud customer environments. As a complete platform that integrates and scales with your organization, Docker EE 2.0 gives you the most flexibility and choice over the types of applications supported, orchestrators used, and where it’s deployed. It also enables organizations to operationalize Kubernetes more rapidly with streamlined workflows and helps you deliver safer applications through integrated security solutions.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Can you use Docker Compose to build up Swarm/Kubernetes Cluster?
+
+Yes, one can deploy a stack on Kubernetes with docker stack deploy command, the `docker-compose.yml` file, and the name of the stack. Example: `$docker stack deploy --compose-file /path/to/docker-compose.yml mystack $docker stack services mystack` You can see the service deployed with the kubectl get services command $kubectl get svc, po, deploy.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is 'docker stack deploy' command meant for?
+
+The "docker stack deploy" is a command to deploy a new stack or update an existing stack. A stack is a collection of services that make up an application in a specific environment. A stack file is a file in YAML format that defines one or more services, similar to a docker-compose.yml file for Docker Compose but with a few extensions.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain the concept of HA under Swarm Mode?
+
+HA refers to High Availability. High Availability is a feature where you have multiple instances of your applications running in parallel to handle increased load or failures. These two paradigms fit perfectly into Docker Swarm, the built-in orchestrator that comes with Docker. Deploying your applications like this will improve your uptime which translates to happy users. For creating a high availability container in the Docker Swarm, we need to deploy a docker service to the swarm with nginx image. This can be done by using docker swarm create command as specified above.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What are Docker secrets and why is it necessary
+
+In Docker there are three key components to container security and together they result in inherently safer apps. img Docker Secrets, a container native solution that strengthens the Trusted Delivery component of container security by integrating secret distribution directly into the container platform. By integrating secrets into Docker orchestration, we are able to deliver a solution for the secrets management problem that follows these exact principles. The following diagram provides a high-level view of how the Docker swarm mode architecture is applied to securely deliver a new type of object to our containers: a secret object.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What are docker networking
+
+Mainly we have four mode of networking for Docker
+
+* Bridge mode networking
+* Host mode networking
+* Container mode networking
+* No networking
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Explain a use case for Docker
+
+* It can be used to spin up a unified developement environment for all the developers to avoid the problem of "it works fine on my machine" by packaging up the application with all its dependencies in a docker container and then run it on any os.
+* You can spin up clean test environments quickly (instead of bringing up full virtual machines)in order to test your software.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Basic Docker Commands
+
+| Command       | Description                             | Example                  |
+|---------------|-----------------------------------------|--------------------------|
+|pull   | Download an image from docker hub               | $ docker pull hello-world |
+|run    | Run a container ( create and start a container )| $ docker run hello-world |
+|ps     | List containers ( process status )              | $ docker ps              |
+|images | List images                                     | $ docker images          |
+|logs   | Show container logs                             | $ docker logs -f myapp   |
+|exec   | Execute a command in a running container        | $ docker exec myapp ls   |
+|cp     | Copy files between a container and local file system| $ docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH |
+|build  | Build a new image                               | $ docker build -t myapp:latest . |
+|start  | Start a Docker container                        | $ docker start myapp     |
+|stop   | Stop a docker container                         | $ docker stop myapp      |
+|version| Display Docker Client and Docker Server version | $ docker version  |
+|info   | Display number of containers running, paused, stopped, number of images etc.| $ docker info |
+|build  | Build docker image                              | $ docker build . -t myapp:1.0.0 |
+|dockerd| To launch Docker daemon                         | $ dockerd   |
+|create | To create a new container.                      | $ docker create hello-world   |
+|kill   | To kill a container                             | $ docker kill myapp |
+|commit | To create a new image from container changes.   | $ docker container commit mycontainer myimage |
+|login  | To login into hub.docker.com                    | $ docker login  |
+|push `<username/image name>`| push it to docker hub      | $ docker push myapp |
+|rm `<container id>`| delete a stopped container          | $ docker rm myapp |
+|rmi `<image-id>` | delete an image from the local system | $ docker rmi myapp |
+|system prune | to remove all the stopped containers, all the networks that are not used, all dangling images and all build caches.| $ docker system prune --all |
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
