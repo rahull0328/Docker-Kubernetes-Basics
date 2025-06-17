@@ -288,3 +288,125 @@ No, you won\'t lose any data when Docker container exits. Any data that your app
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
+
+## Q. ***Where all do you think Docker is being used?***
+
+Docker is being used in the following areas:
+
+* **Simplifying configuration**: Docker lets you put your environment and configuration into code and deploy it.
+* **Code Pipeline Management**: There are different systems used for development and production. As the code travels from development to testing to production, it goes through a difference in the environment. Docker helps in maintaining the code pipeline consistency.
+* **Developer Productivity**: Using Docker for development gives us two things – We\'re closer to production and development environment is built faster.
+* **Application Isolation**: As containers are applications wrapped together with all dependencies, your apps are isolated. They can work by themselves on any hardware that supports Docker.
+* **Debugging Capabilities**: Docker supports various debugging tools that are not specific to containers but work well with containers.
+* **Multi-tenancy**: Docker lets you have multi-tenant applications avoiding redundancy in your codes and deployments.
+* **Rapid Deployment**: Docker eliminates the need to boost an entire OS from scratch, reducing the deployment time.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How is Docker different from other containerization methods?***
+
+Docker containers are very easy to deploy in any cloud platform. It can get more applications running on the same hardware when compared to other technologies, it makes it easy for developers to quickly create, ready-to-run containerized applications and it makes managing and deploying applications much easier. You can even share containers with your applications.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Can I use JSON instead of YAML for my compose file in Docker?***
+
+You can use JSON instead of YAML for your compose file, to use JSON file with compose, specify the JSON filename to use,
+for eg:
+
+```js
+docker-compose -f docker-compose.json up
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How have you used Docker in your previous position?***
+
+Explain how you have used Docker to help rapid deployment. Explain how you have scripted Docker and used it with other tools like Puppet, Chef or Jenkins. If you have no past practical experience in Docker and instead have experience with other tools in a similar space, be honest and explain the same. In this case, it makes sense if you can compare other tools to Docker in terms of functionality.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How far do Docker containers scale? Are there any requirements for the same?***
+
+Large web deployments like Google and Twitter and platform providers such as Heroku and dotCloud, all run on container technology. Containers can be scaled to hundreds of thousands or even millions of them running in parallel. Talking about requirements, containers require the memory and the OS at all the times and a way to use this memory efficiently when scaled.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Is there a way to identify the status of a Docker container?***
+
+There are six possible states a container can be at any given point –
+
+1. Created
+1. Running
+1. Paused
+1. Restarting
+1. Exited
+1. Dead.
+
+Use the following command to check for docker state at any given point: `$ docker ps` The above command lists down only running containers by default. To look for all containers, use the following command: `$ docker ps -a`
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Can you remove a paused container from Docker?***
+
+The answer is no. You cannot remove a paused container. The container has to be in the stopped state before it can be removed.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Can a container restart by itself?***
+
+No, it\'s not possible for a container to restart by itself. By default the flag -restart is set to false.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Is it better to directly remove the container using the rm command or stop the container followed by remove container?***
+
+Its always better to stop the container and then remove it using the remove command. `$ docker stop <coontainer_id> $ docker rm -f <container_id>`
+Stopping the container and then removing it will allow sending SIG_HUP signal to recipients. This will ensure that all the containers have enough time to clean up their tasks. This method is considered a good practice, avoiding unwanted errors.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Will cloud overtake the use of Containerization?***
+
+Docker containers are gaining popularity but at the same time, Cloud services are giving a good fight. In my personal opinion, Docker will never be replaced by Cloud. Using cloud services with containerization will definitely hype the game. Organizations need to take their requirements and dependencies into consideration into the picture and decide what\'s best for them. Most of the companies have integrated Docker with the cloud. This way they can make the best out of both the technologies.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How many containers can run per host?***
+
+There can be as many containers as you wish per host. Docker does not put any restrictions on it. But you need to consider every container needs storage space, CPU and memory which the hardware needs to support. You also need to consider the application size. Containers are considered to be lightweight but very dependant on the host OS.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Is it a good practice to run stateful applications on Docker? or What type of applications - Stateless or Stateful are more suitable for Docker Container?***
+
+The concept behind stateful applications is that they store their data onto the local file system. You need to decide to move the application to another machine, retrieving data becomes painful. I honestly would not prefer running stateful applications on Docker.
+
+Suppose you have an application that has many dependant services. Will docker compose wait for the current container to be ready to move to the running of the next service?
+The answer is yes. Docker compose always runs in the dependency order. These dependencies are specifications like depends_on, links, volumes_from, etc.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
