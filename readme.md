@@ -921,3 +921,164 @@ docker run myimage
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
+
+## Q. What is the difference between a docker registry and repository?
+
+**Registry:**
+
+A service responsible for hosting and distributing images. The default registry is the Docker Hub.
+
+**Repository:**
+
+A collection of related images (usually providing different versions of the same application or service).
+
+**Tag:**
+
+An alphanumeric identifier attached to images within a repository (e.g., 14.04 or stable ).
+
+**Syntax:**
+
+```js
+docker pull myregistryhost:3000/namespace/repo-name:tag
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the default CPU limit set for a container?
+
+By default, a container has no resource constraints and can use as much of a given resource as the host\'s kernel scheduler allows. Docker provides ways to control how much memory, or CPU a container can use, setting runtime configuration flags of the docker run command.
+
+To limit the maximum amount of memory usage for a container, add the `--memory` option to the docker run command. Alternatively, you can use the shortcut `-m`.
+
+**Syntax:**
+
+```js
+docker run -it --memory="[memory_limit]" [docker_image]
+```
+
+**Example:**
+
+```js
+docker run -it --memory="1g" ubuntu
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Can you create containers without their own PID namespace
+
+Docker creates a new PID namespace for each container by default. A container\'s PID namespace isolates processes in that container from processes in other containers.
+
+Without a PID namespace, the processes running inside a container would share the same ID space as those in other containers or on the host. A process in a container would be able to determine what other processes were running on the host machine.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between Docker Image and Layer?
+
+Layers are what compose the file system for both Docker images and Docker containers. When you pull a image, you eventually don\'t have to download all of its filesystem. If you already have another image that has some of the layers of the image you pull, only the missing layers are actually downloaded.
+
+**show case**
+
+```js
+docker pull busybox
+docker history busybox
+
+// Output
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+d7057cb02084        39 hours ago        /bin/sh -c #(nop) CMD ["sh"]                    0 B
+cfa753dfea5e        39 hours ago        /bin/sh -c #(nop) ADD file:6cccb5f0a3b3947116   1.096 MB
+```
+
+Now create a new container from layer `cfa753dfea5e` as if it was an image:
+
+```js
+docker run -it cfa753dfea5e sh -c "ls /"
+
+// Output
+bin   dev   etc   home  proc  root  sys   tmp   usr   var
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between "expose" and "publish" in Docker?
+
+In Docker networking, there are two different mechanisms that directly involve network ports: exposing and publishing ports. This applies to the default bridge network and user-defined bridge networks.
+
+You expose ports using the **EXPOSE** keyword in the Dockerfile or the `--expose` flag to docker run. Exposing ports is a way of documenting which ports are used, but does not actually map or open any ports. Exposing ports is optional.
+
+**Example:** Dockerfile
+
+```js
+...
+EXPOSE 3000
+...
+```
+
+You publish ports using the `--publish` or `--publish-all` flag to docker run. This tells Docker which ports to open on the container\'s network interface.
+
+**Example:**
+
+```js
+docker run -d -p 3000 <image_id>
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Docker Compose vs. Dockerfile - which is better?
+
+A **Dockerfile** is a text document that contains all the commands/Instruction a user could call on the command line to assemble an image. Using **docker build** commmand we can build an image from a Dockerfile.
+
+**Example:**
+
+```js
+FROM centos:latest
+LABEL maintainer="collabnix"
+RUN yum update -y && \
+	yum install -y httpd net-tools && \
+	mkdir -p /run/httpd 
+EXPOSE 80
+ENTRYPOINT apachectl "-DFOREGROUND"
+```
+
+**Docker Compose** is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application\'s services. Then, with a single command, you create and start all the services from your configuration. By default, docker-compose expects the name of the Compose file as `docker-compose.yml` or `docker-compose.yaml`. If the compose file have different name we can specify it with `-f` flag.
+
+**Example:**
+
+```js
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+    - "5000:5000"
+    volumes:
+    - .:/code
+    - logvolume01:/var/log
+    links:
+    - redis
+  redis:
+    image: redis
+volumes:
+  logvolume01: {}
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What exactly do you mean by "Dockerized node"? Can this node be on-premises or in the cloud?
+
+Docker can manage nodes that exist on-premises as well as in the cloud. Docker Datacenter is an on-premises solution that enterprises use to create, manage, deploy and scale their applications and comes with support from the Docker team. It can manage hosts that exist in your datacenter as well as in your virtual private cloud or public cloud provider (AWS, Azure, Digital Ocean, SoftLayer etc.).
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
