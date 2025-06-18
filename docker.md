@@ -410,3 +410,176 @@ The answer is yes. Docker compose always runs in the dependency order. These dep
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
+
+## Q. ***How will you monitor Docker in production?***
+
+Docker provides functionalities like docker stats and docker events to monitor docker in production. Docker stats provides CPU and memory usage of the container. Docker events provide information about the activities taking place in the docker daemon.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Is it a good practice to run Docker compose in production?***
+
+Yes, using docker compose in production is the best practical application of docker compose. When you define applications with compose, you can use this compose definition in various production stages like CI, staging, testing, etc.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What changes are expected in your docker compose file while moving it to production?***
+
+These are the following changes you need make to your compose file before migrating your application to the production environment:
+
+* Remove volume bindings, so the code stays inside the container and cannot be changed from outside the container.
+* Binding to different ports on the host.
+* Specify a restart policy
+* Add extra services like log aggregator
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Are you aware of load balancing across containers and hosts? How does it work?***
+
+While using docker service with multiple containers across different hosts, you come across the need to load balance the incoming traffic. Load balancing and HAProxy is basically used to balance the incoming traffic across different available(healthy) containers. If one container crashes, another container should automatically start running and the traffic should be re-routed to this new running container. Load balancing and HAProxy works around this concept.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is a Docker Registry?***
+
+A Docker Registry is a place where all the Docker Images will be stored and Docker Cloud and Docker Hub are the public registries where these images can be hosted upon. The Docker hub is the default storage for the Docker Images. An own registry can also be set up as per the requirement. Docker Data Center (DDC) can also be used which includes DTR (Docker Trusted Registry). Docker store will provide the feature of buying and selling the Docker images.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is DockerHub?***
+
+DockerHub is a cloud-based registry service which allows you to link to code repositories, build your images and test them, stores manually pushed images, and links to Docker cloud so you can deploy images to your hosts. It provides a centralized resource for container image discovery, distribution and change management, user and team collaboration, and workflow automation throughout the development pipeline.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How to create Docker container***
+
+We can use Docker image to create Docker container by using the below command:
+
+```js
+docker run -t -i command name
+```
+
+This command will create and start a container.If you want to verify the list of all running container with the status on a host use the below command:
+
+```js
+docker ps -a
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Does Docker container package up the entire OS?***
+
+Docker containers do not package up the OS. They package up the applications with everything that the application needs to run. The engine is installed on top of the OS running on a host. Containers share the OS kernel allowing a single host to run multiple containers.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Describe how many ways are available to configure Docker daemon?***
+
+There are two ways to configure the Docker daemon:
+
+* Using a JSON configuration file. This is the preferred option, since it keeps all configurations in a single place.
+* Using flags when starting dockerd. You can use both of these options together as long as you don’t specify the same option both as a flag and in the JSON file. If that happens, the Docker daemon won’t start and prints an error message.
+
+```js
+$ dockerd --debug --tls=true --tlscert=/var/docker/server.pem --tlskey=/var/docker/serverkey.pem
+--host tcp://<Host_IP>:2376
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Can you list reasons why Container Networking is so important?***
+
+* Containers need to talk to external world.
+* Reach Containers from external world to use the service that Containers provides.
+* Allows Containers to talk to host machine.
+* Inter-container connectivity in same host and across hosts.
+* Discover services provided by containers automatically.
+* Load balance traffic between different containers in a service.
+* Provide secure multi-tenant services.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How to create a user-defined Bridge network ?***
+
+To create a user-defined bridge network, one can use the docker network create command -
+
+`$ docker network create mynet`
+
+You can specify the subnet, the IP address range, the gateway, and other options. See the docker network create reference or the output of docker network create --help for details.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***What is memory-swap flag?***
+
+`--memory-swap` is a modifier flag that only has meaning if `--memory` is also set. Using swap allows the container to write excess memory requirements to disk when the container has exhausted all the RAM that is available to it. There is a performance penalty for applications that swap memory to disk often.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***Can you explain different volume mount types available in Docker?***
+
+There are three mount types available in Docker · Volumes are stored in a part of the host filesystem which is managed by Docker (`/var/lib/docker/volumes/` on Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker. · Bind mounts may be stored anywhere on the host system. They may even be important system files or directories. Non-Docker processes on the Docker host or a Docker container can modify them at any time. · tmpfs mounts are stored in the host system’s memory only, and are never written to the host system’s filesystem.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How to share data among DockerHost?***
+
+Ways to achieve this when developing your applications. One is to add logic to your application to store files on a cloud object storage system like Amazon S3. Another is to create volumes with a driver that supports writing files to an external storage system like NFS or Amazon S3. Volume drivers allow you to abstract the underlying storage system from the application logic. For example, if your services use a volume with an NFS driver, you can update the services to use a different driver, as an example to store data in the cloud, without changing the application logic.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How to Backup, Restore, or Migrate data volumes under Docker container?***
+
+Steps to Backup a container
+
+1. Launch a new container and mount the volume from the dbstore container
+1. Mount a local host directory as /backup
+1. Pass a command that tars the contents of the dbdata volume to a backup.tar file inside our /backup directory.
+
+`$ docker run --rm --volumes-from dbstore -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /dbdata` Restore container from backup With the backup just created, you can restore it to the same container, or another that you made elsewhere. For example, create a new container named dbstore2: `$ docker run -v /dbdata --name dbstore2 ubuntu /bin/bash`
+
+Then un-tar the backup file in the new container`s data volume:
+
+```js
+docker run --rm --volumes-from dbstore2 -v $(pwd):/backup ubuntu bash -c "cd /dbdata && tar xvf /backup/backup.tar --strip 1"
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Q. ***How to Configure Automated Builds on DockerHub***
+
+You can build your images automatically from a build context stored in a repository. A build context is a Dockerfile and any files at a specific location. For an automated build, the build context is a repository containing a Dockerfile.
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
