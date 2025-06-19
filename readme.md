@@ -1082,3 +1082,184 @@ Docker can manage nodes that exist on-premises as well as in the cloud. Docker D
 <div align="right">
     <b><a href="#table-of-contents">↥ back to top</a></b>
 </div>
+
+## Q. How can we control the startup order of services in Docker compose?
+
+Compose always starts and stops containers in dependency order, where dependencies are determined by **depends_on**, **links**, **volumes_from**, and **network_mode: "service:..."**.
+
+**Example:** to use wait-for-it.sh or wait-for to wrap your service\'s command:
+
+```js
+version: "2"
+services:
+  web:
+    build: .
+    ports:
+      - "80:8000"
+    depends_on:
+      - "db"
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "app.py"]
+  db:
+    image: postgres
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is an orphan volume and how to remove it?
+
+If you want to see a list of the dangling volumes you can simply run:
+
+```js
+docker volume ls -qf dangling=true
+```
+
+**docker volume ls** lists the volumes and **-qf** means list only the ids and filter on **dangling=true**.
+
+To delete these volumes we\'ll pass them in to the **docker volume rm** function which takes a volume id or list of ids. The final command is:
+
+```js
+docker volume rm $(docker volume ls -qf dangling=true)
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Can you explain dockerfile ONBUILD instruction?
+
+The `ONBUILD` instruction adds to the image a trigger instruction to be executed at a later time, when the image is used as the base for another build. The trigger will be executed in the context of the downstream build, as if it had been inserted immediately after the `FROM` instruction in the downstream Dockerfile.
+
+This is useful if you are building an image which will be used as a base to build other images, for example an application build environment or a daemon which may be customized with user-specific configuration.
+
+**Example:**
+
+```js
+ONBUILD ADD . /app/src
+ONBUILD RUN /usr/local/bin/python-build --dir /app/src
+```
+
+*Note:*
+
+* Chaining **ONBUILD** instructions using **ONBUILD** isn\'t allowed.
+* The **ONBUILD** instruction may not trigger **FROM** or **MAINTAINER** instructions.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How does Docker run containers in non-Linux systems?
+
+Windows and Macintosh systems can\'t run Linux containers directly, since they\'re not Linux kernels with the appropriate facilities to run even Linux programs, much less supporting the same extra cgroup facilities. So when you install Docker on these, generally it installs a Linux VM on which to run the containers. Almost invariably it will install only a single VM and run all containers in that one VM.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How containers work at low level?
+
+Containers are implemented using **Linux namespaces** and **cgroups**. Namespaces let you virtualize system resources, like the file system or networking for each container. On the other hand, cgroups provide a way to limit the amount of resources, such as CPU and memory, that each container can use. At their core, low-level container runtimes are responsible for setting up these namespaces and cgroups for containers, and then running commands inside those namespaces and cgroups.
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. Name some limitations of containers vs VM
+
+| VMs                          |Containers                |
+|------------------------------|--------------------------|
+| Heavyweight	               | Lightweight               |
+| Limited performance          | Native performance    |
+| Each VM runs in its own OS   | All containers share the host OS|
+| Hardware-level virtualization| OS virtualization|
+| Startup time in minutes      | Startup time in milliseconds|
+| Allocates required memory    | Requires less memory space|
+| Fully isolated and hence more secure|	Process-level isolation, possibly less secure|
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to use Docker with multiple environments?
+
+In a software development lifecycle, there may be as little deployment environments as just **development** and **production**. However, there may also be as many as **development**, **integration**, **testing**, **staging** and **production**.
+
+Docker Compose is a Docker companion tool used to coordinate multiple containers with configurations. Compose will only need you one file `docker-compose.yaml` which defines everything from build-time to run-time and one command docker-compose up.
+
+**Example:**
+
+```js
+FROM node:8-alpine
+
+WORKDIR /usr/src/your-app
+
+COPY package*.json ./
+
+RUN if [ "$NODE_ENV" = "development" ]; \
+	then npm install;  \
+	else npm install --only=production; \
+	fi
+
+COPY . .
+```
+
+Development command:
+
+```js
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+Production command:
+
+```js
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is the difference between a Docker image and a container?
+
+|Docker Image	                   | Docker Container       |
+|----------------------------------|------------------------|
+|It is Blueprint of the Container. |It is instance of the Image.
+|Image is a logical entity.	       |Container is a real world entity.
+|Image is created only once.	   |Containers are created any number of times using image.
+|Images are immutable.	           |Containers changes only if old image is deleted and new is used to build the container.
+|Images does not require computing resource to work.|Containers requires computing resources to run as they run as Docker Virtual Machine.|
+|To make a docker image, you have to write script in Dockerfile.|To make container from image, you have to run “docker build” command|
+|Docker Images are used to package up applications and pre-configured server environments.|Containers use server information and file system provided by image in order to operate.|
+|Images can be shared on Docker Hub.|It makes no sense in sharing a running entity, always docker images are shared.|
+|There is no such running state of Docker Image.|Containers uses RAM when created and in running state.|
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. How to link containers?
+
+**Connect using network port mapping:**
+
+```js
+docker run -d -p 3000:3000 sofyspace/react-app
+```
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
+
+## Q. What is Paravirtualization?
+
+Paravirtualization is a computer hardware virtualization technique that allows virtual machines (VMs) to have an interface similar to that of the underlying or host hardware. This technique aims to improve the VM\'s performance by modifying the guest operating system (OS).
+
+With paravirtualization, the guest OS is modified, so it knows that it is running in a virtualized environment on top of a hypervisor (the hardware running the VM) and not on the physical hardware.
+
+<p align="center">
+  <img src="assets/paravirtualization.png" alt="Paravirtualization" width="600px" />
+</p>
+
+<div align="right">
+    <b><a href="#table-of-contents">↥ back to top</a></b>
+</div>
