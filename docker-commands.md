@@ -315,3 +315,245 @@ docker history [IMAGE]
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
+
+## Networks
+
+**List networks:**
+
+```bash
+docker network ls
+```
+
+**Remove one or more networks:**
+
+```bash
+docker network rm NETWORK [NETWORK...]
+
+# Example:
+docker network rm my-network
+```
+
+**Inspect network:**
+
+```bash
+docker network inspect networkname
+
+# Example:
+docker network inspect bridge
+```
+
+**Connects a container to a network:**
+
+```bash
+docker network connect [OPTIONS] NETWORK CONTAINER
+
+# Example:
+docker network connect multi-host-network container1
+```
+
+**Disconnect a container from a network:**
+
+```bash
+docker network disconnect [OPTIONS] NETWORK CONTAINER
+
+# Example:
+docker network disconnect multi-host-network container1
+```
+
+**Create network:**
+
+It is possible to create a network in Docker before launching containers
+
+```bash
+docker network create [OPTIONS] NETWORK
+
+# Example:
+docker network create –-driver bridge some_network
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## Dockerfile
+
+Dockerfile is a text document that contains set of commands and instructions which will be executed in a sequence in the docker environment for building a new docker image.
+
+|Command        |Description|
+|---------------|-----------------------------------|
+|FROM           | Sets the base image for subsequent|
+|MAINTAINER     | Sets the author field of the generated images|
+|RUN            | Execute commands in a new layer on top of the current image and commit the results|
+|CMD            | Allowed only once (if many then last one takes effect) |
+|LABEL          | Adds metadata to an image|
+|EXPOSE         | Informs container runtime that the container listens on the specified network ports at runtime|
+|ENV            | Sets an environment variable|
+|ADD            | Copy new files, directories, or remote file URLs from into the filesystem of the container|
+|COPY           | Copy new files or directories into the filesystem of the container|
+|ENTRYPOINT     | Allows you to configure a container that will run as an executable|
+|VOLUME         | Creates a mount point and marks it as holding externally mounted volumes from native host or other containers|
+|USER           | Sets the username or UID to use when running the image|
+|WORKDIR        | Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY, and ADD commands|
+|ARG            | Defines a variable that users can pass at build-time to the builder using --build-arg|
+|ONBUILD        | Adds an instruction to be executed later, when the image is used as the base for another build|
+|STOPSIGNAL     | Sets the system call signal that will be sent to the container to exit|
+
+**FROM**
+
+This command sets the base image for subsequent instructions
+
+```bash
+FROM <image>
+FROM <image>:<tag>
+FROM <image>@<digest>
+
+# Example:
+FROM ubuntu
+FROM ubuntu:latest
+FROM ubuntu:18.04
+```
+
+**RUN**
+
+RUN instruction allows you to install your application and packages required for it. It executes any commands on top of the current image and creates a new layer by committing the results. It is quite common to have multiple RUN instructions in a Dockerfile.
+
+```bash
+# Shell Form: RUN
+RUN npm start
+
+
+# Exec form RUN ["", "", ""]
+RUN [ "npm", "start" ]
+```
+
+**ENTRYPOINT**
+
+An ENTRYPOINT allows you to configure a container that will run as an executable. It is used to run when container starts.
+
+```bash
+# Exec Form:
+ENTRYPOINT ["executable", "param1", "param2"]
+
+#Shell Form:
+ENTRYPOINT command param1 param2
+
+# Example:
+FROM alpine:3.5
+ENTRYPOINT ["/bin/echo", "Print ENTRYPOINT instruction of Exec Form"]
+```
+
+If an image has an ENTRYPOINT and pass an argument to it while running the container, it wont override the existing entrypoint but it just appends what you passed with the entrypoint. To override the existing ENTRYPOINT. you should user –entrypoint flag for the running container.
+
+```bash
+# Build image:
+docker build -t entrypointImage .
+
+# Run the image:
+docker container run entrypointImage // Print ENTRYPOINT instruction of Exec Form
+
+# Override entrypoint:
+docker run --entrypoint "/bin/echo" entrypointImage "Override ENTRYPOINT instruction" // Override ENTRYPOINT instruction
+```
+
+**CMD**
+
+CMD instruction is used to set a default command, which will be executed only when you run a container without specifying a command. But if the docker container runs with a command, the default command will be ignored.
+
+The CMD instruction has three forms,
+
+```bash
+# Exec form:
+CMD ["executable","param1","param2"]
+
+# Default params to ENTRYPOINT:
+CMD ["param1","param2"]
+
+# Shell form:
+CMD command param1 param2
+```
+
+The main purpose of the CMD command is to launch the required software in a container. For example, running an executable `.exe` file or a Bash terminal as soon as the container starts.
+
+Remember, if docker runs with executable and parameters then CMD instruction will be overridden(Unlike ENTRYPOINT).
+
+```bash
+docker run executable parameters
+```
+
+Note: There should only be one CMD command in your Dockerfile. Otherwise only the last instance of CMD will be executed.
+
+**COPY**
+
+The COPY instruction copies new files or directories from source and adds them to the destination filesystem of the container.
+
+```bash
+COPY [--chown=<user>:<group>] <src>... <dest>
+COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
+
+# Example:
+COPY test.txt /absoluteDir/
+COPY tes? /absoluteDir/        # Copies all files or directories starting with test to destination container
+```
+
+The path must be relative to the source directory that is being built. Whereas is an absolute path, or a path relative to WORKDIR.
+
+**ADD**
+
+The ADD instruction copies new files, directories or remote file URLs from source and adds them to the filesystem of the image at the destination path. The functionality is similar to COPY command and supports two forms of usage,
+
+```bash
+ADD [--chown=<user>:<group>] <src>... <dest>
+ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]
+
+# Example:
+ADD test.txt /absoluteDir/
+ADD tes? /absoluteDir/        # Copies all files or directories starting with test to destination container
+```
+
+ADD commands provides additional features such as downloading remote resources, extracting TAR files etc.
+
+```bash
+# Download an external file and copy to the destination
+ADD http://source.file/url  /destination/path
+
+# Copies compressed files and extract the content in the destination
+ADD source.file.tar.gz /temp
+```
+
+**ENV**
+
+The ENV instruction sets the environment variable to the value . It has two forms,
+
+The first form, `ENV <key> <value>`, will set a single variable to a value.
+The second form, `ENV <key>=<value> ...`, allows for multiple variables to be set at one time.
+
+```bash
+ENV <key> <value>
+ENV <key>=<value> [<key>=<value> ...]
+
+# Example:
+ENV name="Chand Anima" age=30
+ENV name Chand Anima
+ENV age 30
+```
+
+**EXPOSE**
+
+The EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime. i.e, It helps in inter-container communication. You can specify whether the port listens on TCP or UDP, and the default is TCP.
+
+```bash
+EXPOSE <port> [<port>/<protocol>...]
+
+# Example:
+EXPOSE 80/udp
+EXPOSE 80/tcp
+```
+
+But if you want to bind the port of the container with the host machine on which the container is running, use -p option of docker run command.
+
+```bash
+docker run -p <HOST_PORT>:<CONTAINER:PORT> IMAGE_NAME
+
+# Example:
+docker run -p 80:80/udp myDocker
+```
