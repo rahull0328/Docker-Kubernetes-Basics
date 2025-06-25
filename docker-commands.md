@@ -557,3 +557,106 @@ docker run -p <HOST_PORT>:<CONTAINER:PORT> IMAGE_NAME
 # Example:
 docker run -p 80:80/udp myDocker
 ```
+
+**WORKDIR**
+
+The WORKDIR command is used to define the working directory of a Docker container at any given time for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile.
+
+```bash
+WORKDIR /path/to/workdir
+
+# Example:
+WORKDIR /c
+WORKDIR d
+WORKDIR e
+RUN pwd  // /c/d/e
+```
+
+**LABEL**
+
+The LABEL instruction adds metadata as key-value pairs to an image. Labels included in base or parent images (images in the FROM line) are inherited by your image.
+
+```bash
+LABEL <key>=<value> <key>=<value> <key>=<value> ...
+
+# Example:
+LABEL version="1.0"
+LABEL multi.label1="value1" \
+      multi.label2="value2" \
+      other="value3"
+```
+
+You can view an image\'s labels using the docker image inspect `--format=''` myimage command. The output would be as below,
+
+```bash
+{
+  "version": "1.0",
+  "multi.label1": "value1",
+  "multi.label2": "value2",
+  "other": "value3"
+}
+```
+
+**MAINTAINER**
+
+The MAINTAINER instruction sets the Author field of the generated images.
+
+```bash
+MAINTAINER <name>
+
+# Example:
+MAINTAINER Gabby
+```
+
+This command is deprecated status now and the recommended usage is with LABEL command
+
+```bash
+LABEL maintainer="Gabby"
+```
+
+**VOLUME**
+
+The VOLUME instruction creates a mount point with the specified name and mounted volumes from native host or other containers.
+
+```bash
+VOLUME ["/data"]
+
+# Example:
+FROM ubuntu
+RUN mkdir /test
+VOLUME /test
+```
+
+## Docker Compose
+
+Docker Compose is a tool for running multi-container applications on Docker defined using the Compose file format.
+
+Using Docker Compose is basically a three-step process:
+
+1. Define your app\'s environment with a Dockerfile so it can be reproduced anywhere.
+1. Define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment.
+1. Lastly, run `docker compose up` and Compose will start and run your entire app.
+
+A `docker-compose.yml` looks like this:
+
+```bash
+version: "3.9"  # optional since v1.27.0
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+      - logvolume01:/var/log
+    links:
+      - redis
+  redis:
+    image: redis
+volumes:
+  logvolume01: {}
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
