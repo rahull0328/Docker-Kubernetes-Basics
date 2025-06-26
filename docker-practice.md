@@ -121,3 +121,142 @@ docker container run -it busybox sh       // Open sh terminal in busybox
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
+
+## 7. Creating Custom Image
+
+```js
+docker container run -it --name scm-container alpine:latest /bin/sh   // Create a new custom conatiner "scm-container" 
+# apk add --update redis                                              // Updates apk package in redis 
+# exit                                             
+docker container commit scm-container scm-image                       // Creates a new image from "scm-container" 
+docker image ls                                                       // display image list 
+docker container run scm-image redis-server                           // Star custom container using redis server 
+docker container exec -it <container-id> redis-cli                      // Validate redis server using redis-cli 
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## 8. Creating an Image from a Dockerfile
+
+* **Dockerfile**
+
+```js
+FROM alpine:latest
+RUN apk add --update redis
+CMD ["redis-server"]
+```
+
+```js
+docker build .                    // Build image from current directory using Dockerfile 
+docker image ls                   // View build image 
+docker image rm -f <image-id>   // Remove build image 
+docker image ls
+docker build -t sofyspace/scm-redis:latest .  // Build image from current directory using Dockerfile 
+docker run sofyspace/scm-redis
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## 9. COPY and ADD Commands
+
+* **Dockerfile**
+
+```js
+# From alpine library
+FROM alpine
+
+# Copy all the files from source directory to Docker image
+COPY ./html_files /app/html
+
+# Copy Text file to Docker image
+COPY sample.txt /app/sample.txt
+
+# Copy tar file to Docker image
+ADD file.tar /app
+
+# Copy svg file directly from url to Docker image
+ADD https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/svg/docker.svg /app/images/logo.svg
+```
+
+```js
+docker build .                  // Build image from current directory using Dockerfile ]
+docker image ls   
+docker run -it <image-id> sh  // Rnu the build container in interactive mode 
+# ls -la                        // Display all directories 
+# cd app/                       // app directory 
+# ls -la                        // List all files and directories 
+# cd ..                         // Parent directory 
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## 10. Dockerizing a Nodejs project and deploy in Docker-Hub
+
+```js
+npm init  // create package.json file
+```
+
+* **index.js**
+
+```js
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Node.js Server Running!');
+});
+
+app.listen(3000, () => {
+   console.log(`Node APP Listening at http://localhost:3000/`);
+});
+```
+
+* **package.json**
+
+```js
+{
+    "dependencies": {
+        "express": "*"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
+}
+```
+
+* **Dockerfile**
+
+```js
+# alpine will download only basic version of node.js
+FROM node:alpine
+
+# Instead of root directory, program will use "/usr/app" directory
+WORKDIR /usr/app
+
+# Copy local directory to nodejs directory
+COPY ./ ./
+
+# Perform npm install
+RUN npm install
+
+# Run npm start in command prompt
+CMD ["npm", "start"]
+```
+
+```js
+docker build -t sofyspace/scm-website:latest .        // --tag , -t   ==> Name and optionally a tag in the 'name:tag' format
+docker run sofyspace/scm-website                      // Project will run on docker conatiner
+docker run -p 3000:3000 sofyspace/scm-website         // Project will run on local and will map to docker conatiner port 
+docker login
+docker push sofyspace/scm-website                     // Deploy in Docker Hub
+```
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
