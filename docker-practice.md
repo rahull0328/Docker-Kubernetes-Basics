@@ -260,3 +260,147 @@ docker push sofyspace/scm-website                     // Deploy in Docker Hub
 <div align="right">
     <b><a href="#">↥ back to top</a></b>
 </div>
+
+## 11. Run SQL Server on Docker
+
+```js
+docker pull mcr.microsoft.com/mssql/server:2017-CU8-ubuntu  // Pull MSSQL-2019 container image
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourStrong@Passw0rd>" -p 1433:1433 --name sql1 -h sql1 -d mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
+```
+
+| Parameter          | Description                  |
+|--------------------|------------------------------|
+|-e "ACCEPT_EULA=Y"  | End-User Licensing Agreement |
+|-e "SA_PASSWORD=<YourStrong@Passw0rd>" | Required setting for the SQL Server image.|
+|-p 1433:1433        |Map a TCP port on the host environment (first value) with a TCP port in the container (second value).|
+| --name sql1        |Specify a custom name for the container rather than a randomly generated one|
+| -h sql1            |Used to explicitly set the container hostname|
+| mcr.microsoft.com/mssql/server:2017-CU8-ubuntu |The SQL Server 2017 Ubuntu Linux container image.|
+
+**Push SQL-Server to Docker Hub:**
+
+**Dockerfile:**
+
+```js
+FROM mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
+
+# Create work directory
+RUN mkdir -p /usr/work
+WORKDIR /usr/work
+
+# Copy all scripts into working directory
+COPY . /usr/work/
+
+# Grant permissions for the import-data script to be executable
+RUN chmod +x /usr/work/import-data.sh
+EXPOSE 1433
+CMD /bin/bash ./entrypoint.sh
+```
+
+```js
+// Build SQL Server Image
+docker build -t sofyspace/sqlserver:dev .
+
+// Push to Docker Hub
+docker push sofyspace/sqlserver:dev
+
+// Connect to Sql Server
+docker exec -it sqlserver "bash"
+
+// Start the Sql Server Container
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourNewStrong@Passw0rd>" -p 1433:1433 -d sofyspace/sqlserver:dev
+```
+
+**Connect to SQL Server:**
+
+```js
+docker exec -it sql1 "bash"
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "<YourNewStrong@Passw0rd>"
+```
+
+**Create a new database:**
+
+```js
+CREATE DATABASE TestDB
+SELECT Name from sys.Databases
+GO
+```
+
+**Insert Data:**
+
+```js
+USE TestDB
+CREATE TABLE Inventory (id INT, name NVARCHAR(50), quantity INT)
+INSERT INTO Inventory VALUES (1, 'Banana', 150); INSERT INTO Inventory VALUES (2, 'Orange', 154); INSERT INTO Inventory VALUES (3, 'Apricot', 200); INSERT INTO Inventory VALUES (4, 'Avocado', 120); INSERT INTO Inventory VALUES (5, 'Cherry', 230); INSERT INTO Inventory VALUES (6, 'Grapes', 420); INSERT INTO Inventory VALUES (7, 'Black plum', 194); INSERT INTO Inventory VALUES (8, 'Guava', 154); INSERT INTO Inventory VALUES (9, 'Kiwi', 110); INSERT INTO Inventory VALUES (10, 'Lychee', 300);
+GO
+```
+
+**Select Data:**
+
+```js
+SELECT * FROM Inventory WHERE quantity > 152;
+GO
+```
+
+**Reference:**
+
+* *[https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-powershell](https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-powershell)*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
+
+## 12. Docker Compose
+
+* **Dockerfile**
+
+```js
+FROM node:10
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+
+* **docker-compose.yml**
+
+```js
+version: '3'
+services:
+  app:
+    container_name: docker-node-mongo
+    restart: always
+    build: .
+    ports:
+      - '80:3000'
+    external_links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+
+```
+
+```js
+docker-compose up    // Install nodejs and mongoDB image  
+localhost            // Default port is 80
+docker-compose down  // Remove Container 
+```
+
+**Reference:**
+
+* *[https://github.com/bradtraversy/docker-node-mongo](https://github.com/bradtraversy/docker-node-mongo)*
+
+<div align="right">
+    <b><a href="#">↥ back to top</a></b>
+</div>
